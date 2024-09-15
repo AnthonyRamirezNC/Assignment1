@@ -38,10 +38,11 @@ resources = {
 
 class SandwichMachine:
 
-    def __init__(self, machine_resources):
+    def __init__(self, machine_resources, recipes):
         """Receives resources as input.
            Hint: bind input variable to self variable"""
         self.machine_resources = machine_resources
+        self.recipes = recipes
 
     def check_resources(self, ingredients):
         """Returns True when order can be made, False if ingredients are insufficient."""
@@ -80,7 +81,26 @@ class SandwichMachine:
     def make_sandwich(self, sandwich_size, order_ingredients):
         for key in order_ingredients.keys():
             self.machine_resources[key] -= order_ingredients.get(key)
+        print(f'{sandwich_size} sandwhich is ready. Bon appetit!')
 
+    def processInput(self, userInput):
+        #check if resources are sufficient to make requested  recipe
+        if(self.check_resources(self.recipes[userInput]["ingredients"])):
+            #able to make recipe
+            #process coin input
+            coins = self.process_coins()
+
+            #process transaction
+            if(self.transaction_result(coins, self.recipes[userInput].get("cost"))):
+                print("transaction processed")
+
+                #make the resource
+                self.make_sandwich(userInput, self.recipes[userInput]["ingredients"])
+                print("resource made")
+            else:
+                print("Not enought coins inserted")
+        else:
+            print("Insufficient resources")
 
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
 machine = SandwichMachine(resources)
@@ -90,31 +110,18 @@ while(userInput != "close"):
     userInput = input("What would you like? (small/ medium/ large/ off/ report): ")
     if(userInput == "small"):
         print("run small")
-        #check if resources are sufficient to make requested  recipe
-        if(machine.check_resources(machine.recipes[userInput]["ingredients"])):
-            #able to make recipe
-            #process coin input
-            print("making resource")
-        else:
-            print("Insufficient resources")
+        machine.processInput(userInput)
+        
 
     elif(userInput == "medium"):
         print("run medium")
         #check if resources are sufficient
-        if(machine.check_resources(machine.recipes[userInput]["ingredients"])):
-            #able to make recipe
-            print("making resource")
-        else:
-            print("Insufficient resources")
+        machine.processInput(userInput)
 
     elif(userInput == "large"):
         print("run large")
         #check if resources are sufficient
-        if(machine.check_resources(machine.recipes[userInput]["ingredients"])):
-            #able to make recipe
-            print("making resource")
-        else:
-            print("Insufficient resources")
+        machine.processInput(userInput)
     
     elif(userInput == "report"):
         print("run report")
