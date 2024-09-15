@@ -59,14 +59,10 @@ class SandwichMachine:
            Hint: include input() function here, e.g. input("how many quarters?: ")"""
         coinAmount  = 0
         print("Please insert coins")
-        coinAmount += int(input("how many large dollars"))
-        print()
-        coinAmount += (.5 * int(input("how many half dollars")))
-        print()
-        coinAmount += (.25 * int(input("how many quarters")))
-        print()
-        coinAmount += (.05 * int(input("how many nickels")))
-        print()
+        coinAmount += int(input("how many large dollars?: "))
+        coinAmount += (.5 * int(input("how many half dollars?: ")))
+        coinAmount += (.25 * int(input("how many quarters?: ")))
+        coinAmount += (.05 * int(input("how many nickels?: ")))
         return coinAmount
 
 
@@ -75,7 +71,10 @@ class SandwichMachine:
            Hint: use the output of process_coins() function for coins input"""
         if coins < cost:
             return False
-        else: return True
+        else: 
+            change = coins - cost
+            print(f'Here is ${change} in change')
+            return True
             
 
     def make_sandwich(self, sandwich_size, order_ingredients):
@@ -98,37 +97,32 @@ class SandwichMachine:
                 self.make_sandwich(userInput, self.recipes[userInput]["ingredients"])
                 print("resource made")
             else:
-                print("Not enought coins inserted")
+                print("Sorry that's not enough money. Money refunded.")
         else:
-            print("Insufficient resources")
+            print("Sorry there is not enough resources")
 
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
-machine = SandwichMachine(resources)
+machine = SandwichMachine(resources, recipes)
 userInput = ""
 
-while(userInput != "close"):
+while(userInput != "off"):
     userInput = input("What would you like? (small/ medium/ large/ off/ report): ")
     if(userInput == "small"):
-        print("run small")
         machine.processInput(userInput)
         
 
     elif(userInput == "medium"):
-        print("run medium")
         #check if resources are sufficient
         machine.processInput(userInput)
 
     elif(userInput == "large"):
-        print("run large")
         #check if resources are sufficient
         machine.processInput(userInput)
     
     elif(userInput == "report"):
-        print("run report")
         #check if resources are sufficient
-    
-    elif(userInput == "off"):
-        print("run off")
-        #check if resources are sufficient
-    
-    else: print("Invalid User Input")
+        print("running report")
+    else: 
+        print("Invalid User Input")
+
+print("shutting down")
