@@ -80,7 +80,7 @@ class SandwichMachine:
     def make_sandwich(self, sandwich_size, order_ingredients):
         for key in order_ingredients.keys():
             self.machine_resources[key] -= order_ingredients.get(key)
-        print(f'{sandwich_size} sandwhich is ready. Bon appetit!')
+        print(f'{sandwich_size} sandwich is ready. Bon appetit!')
 
     def processInput(self, userInput):
         #check if resources are sufficient to make requested  recipe
@@ -91,15 +91,23 @@ class SandwichMachine:
 
             #process transaction
             if(self.transaction_result(coins, self.recipes[userInput].get("cost"))):
-                print("transaction processed")
 
                 #make the resource
                 self.make_sandwich(userInput, self.recipes[userInput]["ingredients"])
-                print("resource made")
             else:
                 print("Sorry that's not enough money. Money refunded.")
         else:
             print("Sorry there is not enough resources")
+
+    def printReport(self):
+        for key in self.machine_resources.keys():
+            if key == "ham":
+                print(f'Ham: {self.machine_resources.get(key)} slice(s)')
+            elif key == "bread":
+                print(f'Bread: {self.machine_resources.get(key)} slice(s)')
+            else:
+                print(f'Cheese: {self.machine_resources.get(key)} pound(s)')
+
 
 ### Make an instance of SandwichMachine class and write the rest of the codes ###
 machine = SandwichMachine(resources, recipes)
@@ -121,8 +129,10 @@ while(userInput != "off"):
     
     elif(userInput == "report"):
         #check if resources are sufficient
-        print("running report")
+        machine.printReport()
+
+    elif(userInput == "off"):
+        break
     else: 
         print("Invalid User Input")
 
-print("shutting down")
